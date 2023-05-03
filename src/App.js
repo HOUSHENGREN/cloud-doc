@@ -1,5 +1,7 @@
 // import logo from './logo.svg';
 import FileSearch from './components/FileSearch';
+import FileList from './components/FileList'
+import defaultFiles from './utils/defaultFiles';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -7,10 +9,15 @@ function App() {
   return (
     <div className="App container-fluid">
       <div className='row'>
-        <div className='col-3 bg-danger left-pane'>
-          <FileSearch onFileSearch={() => console.log(666)} title='My document'>2</FileSearch>
+        <div className='col-6 left-pane'>
+          <FileSearch onFileSearch={(value) => console.log(666, value)} title='My document'></FileSearch>
+          <FileList 
+            files={defaultFiles}
+            onFileClick={(id) => {console.log('777cli', id)}}
+            onFileDelete={(id) => {console.log('777delete', id)}}
+          ></FileList>
         </div>
-        <div className='col-9 left-pane'>55</div>
+        <div className='col-6 left-pane'>55</div>
       </div>
     </div>
   );
