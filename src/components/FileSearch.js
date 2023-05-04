@@ -2,36 +2,32 @@ import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faTimes } from '@fortawesome/free-solid-svg-icons'
 import propTypes from 'prop-types' // 类似于ts的类型检查
+import useKeyPress from "../hooks/useKeyPress"
+
+/**
+ * 当enterPressed值发生变化时，useKeyPress 文件的useEffect 会执行，
+ * 同时，本文件内也有 useEffect，谁先执行？
+ * 
+ */
 
 const FileSearch = ({ title, onFileSearch=(() => {}) }) => {
     const [inputActive, setInputActive] = useState(false)
     const [value, setValue] = useState('')
+    
+    const enterPressed = useKeyPress(13)
+    const escPressed = useKeyPress(27)
 
     const closeSearch = () => {
-        // e.preventDefault() 阻止默认行为，实际发现根本不需要多做这一步
-        console.log('closeSearch')
         setInputActive(false)
         setValue('')
     }
 
     // 按esc 、 enter
     useEffect(() => {
-        const handler = (event) => {
-            const { keyCode } = event
-            // enter
-            if(keyCode === 13 && inputActive) {
-                console.log('search')
-                onFileSearch(value)
-            } else if (keyCode === 27 && inputActive) {
-                // esc
-                closeSearch()
-            }
-        }
-
-        document.addEventListener('keyup', handler)
-        
-        return () => {
-            document.removeEventListener('keyup', handler)
+        if(enterPressed && inputActive) {
+            onFileSearch(value)
+        } else if (escPressed && inputActive) {
+            closeSearch()
         }
     })
 
@@ -69,7 +65,7 @@ const FileSearch = ({ title, onFileSearch=(() => {}) }) => {
                         className="icon-button"
                         onClick={closeSearch}
                     >
-                        <FontAwesomeIcon title="清空" icon={faTimes} />
+                        <FontAwesomeIcon title="关闭" icon={faTimes} />
                     </button>
                 </>
             }
@@ -83,6 +79,7 @@ FileSearch.propTypes = {
     onFileSearch: propTypes.func.isRequired
 }
 
+// 默认值
 FileSearch.defaultProps = {
     title: '我的云文档'
 }

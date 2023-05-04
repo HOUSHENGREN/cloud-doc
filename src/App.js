@@ -15,6 +15,7 @@ function App() {
             files={defaultFiles}
             onFileClick={(id) => {console.log('777cli', id)}}
             onFileDelete={(id) => {console.log('777delete', id)}}
+            onSaveEdit={(id, value) => {console.log('777edit', id, value)}}
           ></FileList>
         </div>
         <div className='col-6 left-pane'>55</div>

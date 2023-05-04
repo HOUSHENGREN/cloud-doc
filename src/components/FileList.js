@@ -1,10 +1,31 @@
 import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faTrash, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { faMarkdown } from '@fortawesome/free-brands-svg-icons'
 import propTypes from 'prop-types'
+import useKeyPress from "../hooks/useKeyPress"
 
 const FileList = ({files, onFileClick, onSaveEdit, onFileDelete}) => {
+    const [editId, setEditId] = useState(null)
+    const [value, setValue] = useState('')
+
+    const enterPressed = useKeyPress(13)
+    const escPressed = useKeyPress(27)
+
+    const closeSearch = () => {
+        setEditId(null)
+        setValue('')
+    }
+
+    // 按esc 、 enter
+    useEffect(() => {
+        if(enterPressed && editId) {
+            onSaveEdit(editId, value)
+            closeSearch()
+        } else if (escPressed && editId) {
+            closeSearch()
+        }
+    })
 
     return (
         <ul className="list-group list-group-flush file-list">
@@ -14,24 +35,53 @@ const FileList = ({files, onFileClick, onSaveEdit, onFileDelete}) => {
                         className="list-group-item bg-light row d-flex align-items-center file-item"
                         key={file.id}
                     >
-                        <span className="col-2">
-                            <FontAwesomeIcon icon={faMarkdown}></FontAwesomeIcon>
-                        </span>
-                        <span className="col-8" onClick={() => { onFileClick(file.id) }}>{file.title}</span>
-                        <button 
-                            type="button"
-                            className="icon-button col-1"
-                            // onClick={() => { onSaveEdit(file.id) }}
-                        >
-                            <FontAwesomeIcon title="编辑" size="lg" icon={faEdit} />
-                        </button>
-                        <button 
-                            type="button"
-                            className="icon-button col-1"
-                            onClick={() => { onFileDelete(file.id) }}
-                        >
-                            <FontAwesomeIcon title="删除" size="lg" icon={faTrash} />
-                        </button>
+                        {/* 非编辑状态 */}
+                        {   
+                            editId !== file.id &&
+                            <>
+                                <span className="col-2">
+                                    <FontAwesomeIcon icon={faMarkdown}></FontAwesomeIcon>
+                                </span>
+                                <span className="col-8 c-link" onClick={() => { onFileClick(file.id) }}>{file.title}</span>
+                                <button 
+                                    type="button"
+                                    className="icon-button col-1"
+                                    onClick={() => { setValue(file.title); setEditId(file.id)}}
+                                >
+                                    <FontAwesomeIcon title="编辑" size="lg" icon={faEdit} />
+                                </button>
+                                <button 
+                                    type="button"
+                                    className="icon-button col-1"
+                                    onClick={() => { onFileDelete(file.id) }}
+                                >
+                                    <FontAwesomeIcon title="删除" size="lg" icon={faTrash} />
+                                </button>
+                            </>
+                        }   
+
+                        {/* 编辑状态 */}
+                        {
+                            editId === file.id &&
+                            <>
+                                <span className="col-10">
+                                    <input
+                                        className="form-control"
+                                        value={value}
+                                        onChange={e => {
+                                            setValue(e.target.value)
+                                        }}
+                                    ></input>
+                                </span>
+                                <button 
+                                    type="button"
+                                    className="icon-button col-2"
+                                    onClick={closeSearch}
+                                >
+                                    <FontAwesomeIcon title="关闭" icon={faTimes} />
+                                </button>
+                            </>
+                        }
                     </li>
                 ))
             }
@@ -43,7 +93,7 @@ FileList.propTypes = {
     files: propTypes.array,
     onFileClick: propTypes.func,
     onFileDelete: propTypes.func,
-    // onSaveEdit: propTypes.func
+    onSaveEdit: propTypes.func
 }
 
 FileList.defaultProps = {
