@@ -7,3 +7,8 @@
 .c-link {
   cursor: pointer;
 }
+
+.btn-block {
+  display: block !important;
+  width: 100% !important;
+}

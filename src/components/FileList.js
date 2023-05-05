@@ -32,7 +32,7 @@ const FileList = ({files, onFileClick, onSaveEdit, onFileDelete}) => {
             {
                 files.map(file => (
                     <li 
-                        className="list-group-item bg-light row d-flex align-items-center file-item"
+                        className="list-group-item bg-light row g-0 d-flex align-items-center file-item"
                         key={file.id}
                     >
                         {/* 非编辑状态 */}
