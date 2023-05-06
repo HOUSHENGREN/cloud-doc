@@ -21,7 +21,7 @@ const useKeyPress = (targetKeyCode) => {
             document.removeEventListener('keyup', keyupHandler)
             document.removeEventListener('keydown', keydownHandler) 
         }
-    }, [])
+    }, []) // 没有依赖项
 
     return keyPressed
 }

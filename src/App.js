@@ -6,12 +6,13 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import BottomBtn from './components/BottomBtn'
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import TabList from './components/TabList';
 
 function App() {
   return (
     <div className="App container-fluid px-0">
       <div className='row g-0'>
-        <div className='col-6 left-pane px-0'>
+        <div className='col-3 left-pane px-0'>
           <FileSearch onFileSearch={(value) => console.log(666, value)} title='My document'></FileSearch>
           <FileList 
             files={defaultFiles}
@@ -36,7 +37,11 @@ function App() {
             </div>
           </div>
         </div>
-        <div className='col-6 left-pane px-0'></div>
+        <div className='col-9 left-pane px-0'>
+          <TabList
+            files={defaultFiles}
+          ></TabList>
+        </div>
       </div>
     </div>
   );
