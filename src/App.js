@@ -7,6 +7,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import BottomBtn from './components/BottomBtn'
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import TabList from './components/TabList';
+import SimpleMDE from "react-simplemde-editor";
+import "easymde/dist/easymde.min.css";
 
 function App() {
   return (
@@ -40,7 +42,18 @@ function App() {
         <div className='col-9 left-pane px-0'>
           <TabList
             files={defaultFiles}
+            activeId='1'
+            unsaveIds={['1', '2']}
+            onTabClick={id => { console.log('onTabClick', id)}}
+            onCloseTab={id => { console.log('onCloseTab', id)}}
           ></TabList>
+          <SimpleMDE
+            value={defaultFiles[1].body}
+            onChange={value => { console.log('simpleMde', value); defaultFiles[1].body = value}}
+            options={{
+              minHeight: '370px'
+            }}   
+          ></SimpleMDE>
         </div>
       </div>
     </div>

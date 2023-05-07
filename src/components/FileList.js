@@ -42,17 +42,17 @@ const FileList = ({files, onFileClick, onSaveEdit, onFileDelete}) => {
                                 <span className="col-2">
                                     <FontAwesomeIcon icon={faMarkdown}></FontAwesomeIcon>
                                 </span>
-                                <span className="col-8 c-link" onClick={() => { onFileClick(file.id) }}>{file.title}</span>
+                                <span className="col-6 c-link" onClick={() => { onFileClick(file.id) }}>{file.title}</span>
                                 <button 
                                     type="button"
-                                    className="icon-button col-1"
+                                    className="icon-button col-2"
                                     onClick={() => { setValue(file.title); setEditId(file.id)}}
                                 >
                                     <FontAwesomeIcon title="编辑" size="lg" icon={faEdit} />
                                 </button>
                                 <button 
                                     type="button"
-                                    className="icon-button col-1"
+                                    className="icon-button col-2"
                                     onClick={() => { onFileDelete(file.id) }}
                                 >
                                     <FontAwesomeIcon title="删除" size="lg" icon={faTrash} />
