@@ -17,3 +17,26 @@
 .ml-2 {
   margin-left: 4px;
 }
+
+.start-page {
+  font-size: 30px;
+  height: 300px;
+  line-height: 300px;
+  color: #ccc;
+  text-align: center;
+}
+
+.no-border {
+  border-radius: 0 !important;
+}
+
+.left-pane {
+  height: 100vh;
+  position: relative;
+}
+
+.left-pane .btn-group {
+  position: absolute !important;
+  width: 100%;
+  bottom: 0;
+}
