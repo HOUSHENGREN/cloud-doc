@@ -39,18 +39,21 @@ function App() {
 
   const closeTab = id => {
     console.log('CLOST-TAB', id, openedFileIDs, openedFileIDs.filter(i => i !== id))
-    const filterOpenFiles = openedFileIDs.filter(i => i !== id)
-    setOpenedFileIDs(filterOpenFiles)
+    // const filterOpenFiles = openedFileIDs.filter(i => i !== id)
+    // setOpenedFileIDs(filterOpenFiles)
 
-    // openedFileIDs.splice(0, openedFileIDs.length, ...openedFileIDs.filter(ID => ID !== id))
-    // setOpenedFileIDs(openedFileIDs)
+    const filterOpenFiles = openedFileIDs.filter(i => i !== id)
+
+    openedFileIDs.splice(0, openedFileIDs.length, ...filterOpenFiles)
+    setOpenedFileIDs(openedFileIDs)
 
     console.log('openedid', openedFileIDs, files)
 
     if(id === activeFileID) {
+      // 前面splice 是保证这里openedFileIDs 是修改后的
       if(openedFileIDs.length) {
-        console.log('openFileIDs', openedFileIDs)
-        setActiveFileID(openedFileIDs[0])
+        console.log('openFileIDs',openedFileIDs, openedFileIDs[0])
+        setActiveFileID(openedFileIDs[openedFileIDs.length - 1])
       } else {
         setActiveFileID('')
       }
