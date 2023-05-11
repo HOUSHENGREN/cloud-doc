@@ -20,6 +20,7 @@ const FileSearch = ({ title, onFileSearch=(() => {}) }) => {
     const closeSearch = () => {
         setInputActive(false)
         setValue('')
+        onFileSearch('')
     }
 
     // 按esc 、 enter

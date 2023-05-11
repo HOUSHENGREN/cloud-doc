@@ -16,6 +16,7 @@ function App() {
   const [activeFileID, setActiveFileID] = useState('')
   const [openedFileIDs, setOpenedFileIDs] = useState([])
   const [unsaveFileIDs, setUnsaveFileIDs] = useState([])
+  const [searchedFiles, setSearchedFiles] = useState([])
 
   console.log(openedFileIDs, '88899998')
   const openedFiles = openedFileIDs.map(ID => {
@@ -89,18 +90,35 @@ function App() {
     console.log('files-filter', files, openedFileIDs)
 
   }
+
+  const updateFileName = (id, title) => {
+    files.forEach(file => {
+      if(file.id === id) {
+        file.title = title
+      }
+    })
+    setFiles(files)
+  }
+
+  const fileSearch = (keyword) => {
+    const newFiles = files.filter(file => file.title.includes(keyword))
+    console.log('newFiles', newFiles)
+    setSearchedFiles(newFiles)
+  }
+
+  const fileListArr = searchedFiles.length ? searchedFiles : files
   
   return (
     <div className="App container-fluid px-0">
       <div className='row g-0'>
         <div className='col-3 left-pane px-0'>
-          <FileSearch onFileSearch={(value) => console.log(666, value)} title='My document'></FileSearch>
+          <FileSearch onFileSearch={fileSearch} title='My document'></FileSearch>
           <FileList 
-            files={files}
+            files={fileListArr}
             onFileClick={fileClick}
             // onFileDelete={id => console.log('out file-delete', id)}
             onFileDelete={fileDelete}
-            onSaveEdit={(id, value) => {console.log('777edit', id, value)}}
+            onSaveEdit={updateFileName}
           ></FileList>
           <div className='btn-group row g-0'>
             <div className='col'>
