@@ -9,7 +9,8 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import TabList from './components/TabList';
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { v4 } from 'uuid'
 
 function App() {
   const [files, setFiles] = useState(defaultFiles)
@@ -17,6 +18,7 @@ function App() {
   const [openedFileIDs, setOpenedFileIDs] = useState([])
   const [unsaveFileIDs, setUnsaveFileIDs] = useState([])
   const [searchedFiles, setSearchedFiles] = useState([])
+  const fileListNode = useRef(null)
 
   console.log(openedFileIDs, '88899998')
   const openedFiles = openedFileIDs.map(ID => {
@@ -48,8 +50,6 @@ function App() {
     openedFileIDs.splice(0, openedFileIDs.length, ...filterOpenFiles)
     setOpenedFileIDs(openedFileIDs)
 
-    console.log('openedid', openedFileIDs, files)
-
     if(id === activeFileID) {
       // 前面splice 是保证这里openedFileIDs 是修改后的
       if(openedFileIDs.length) {
@@ -63,8 +63,6 @@ function App() {
 
   const fileChange = (activeFileID, value) => {
     activeFile.body = value
-
-    console.log('file change')
 
     if(!unsaveFileIDs.includes(activeFileID)) {
       setUnsaveFileIDs([...unsaveFileIDs, activeFileID])
@@ -102,18 +100,37 @@ function App() {
 
   const fileSearch = (keyword) => {
     const newFiles = files.filter(file => file.title.includes(keyword))
-    console.log('newFiles', newFiles)
     setSearchedFiles(newFiles)
   }
 
   const fileListArr = searchedFiles.length ? searchedFiles : files
   
+  const createNewFile = () => {
+    const id = v4()
+  
+    const newFiles = [
+        ...files,
+        {
+           id,
+           title: '',
+           body: '## 请输入 markdown',
+           createdAt: new Date().getTime()
+        }
+    ]
+    setFiles(newFiles)
+    console.log('fileListNode', fileListNode)
+
+    // fileListNode.current.onFileClick(id) // todo ? 没有用
+  }
+
+
   return (
     <div className="App container-fluid px-0">
       <div className='row g-0'>
         <div className='col-3 left-pane px-0'>
           <FileSearch onFileSearch={fileSearch} title='My document'></FileSearch>
           <FileList 
+            ref={fileListNode}
             files={fileListArr}
             onFileClick={fileClick}
             // onFileDelete={id => console.log('out file-delete', id)}
@@ -126,6 +143,7 @@ function App() {
                 text='新建'
                 colorClass='btn-primary bnt-block'
                 icon={faPlus}
+                onBntClick={createNewFile}
               ></BottomBtn>
             </div>
             <div className='col'>

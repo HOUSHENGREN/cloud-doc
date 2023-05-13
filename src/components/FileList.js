@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrash, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { faMarkdown } from '@fortawesome/free-brands-svg-icons'
@@ -8,6 +8,7 @@ import useKeyPress from "../hooks/useKeyPress"
 const FileList = ({files, onFileClick, onSaveEdit, onFileDelete}) => {
     const [editId, setEditId] = useState(null)
     const [value, setValue] = useState('')
+    const node = useRef(null)
 
     const enterPressed = useKeyPress(13)
     const escPressed = useKeyPress(27)
@@ -26,6 +27,13 @@ const FileList = ({files, onFileClick, onSaveEdit, onFileDelete}) => {
             closeSearch()
         }
     })
+
+    // 编辑时聚焦输入框
+    useEffect(() => {
+        if(editId) {
+            node.current.focus()
+        }
+    }, [editId])
 
     return (
         <ul className="list-group list-group-flush file-list">
@@ -66,6 +74,7 @@ const FileList = ({files, onFileClick, onSaveEdit, onFileDelete}) => {
                             <>
                                 <span className="col-10">
                                     <input
+                                        ref={node}
                                         className="form-control"
                                         value={value}
                                         onChange={e => {

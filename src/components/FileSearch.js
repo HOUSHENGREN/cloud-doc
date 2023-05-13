@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faTimes } from '@fortawesome/free-solid-svg-icons'
 import propTypes from 'prop-types' // 类似于ts的类型检查
@@ -13,6 +13,7 @@ import useKeyPress from "../hooks/useKeyPress"
 const FileSearch = ({ title, onFileSearch=(() => {}) }) => {
     const [inputActive, setInputActive] = useState(false)
     const [value, setValue] = useState('')
+    const node = useRef(null)
     
     const enterPressed = useKeyPress(13)
     const escPressed = useKeyPress(27)
@@ -20,7 +21,7 @@ const FileSearch = ({ title, onFileSearch=(() => {}) }) => {
     const closeSearch = () => {
         setInputActive(false)
         setValue('')
-        onFileSearch('')
+        onFileSearch('') // 此时，外层filter时就能得到整个files数组
     }
 
     // 按esc 、 enter
@@ -31,6 +32,13 @@ const FileSearch = ({ title, onFileSearch=(() => {}) }) => {
             closeSearch()
         }
     })
+
+    // 编辑时聚焦输入框
+    useEffect(() => {
+        if(inputActive) {
+            node.current.focus()
+        }
+    }, [inputActive])
 
     return (
         <div className="alert alert-primary d-flex justify-content-between align-items-center mb-0">
@@ -57,6 +65,7 @@ const FileSearch = ({ title, onFileSearch=(() => {}) }) => {
                     <input
                         className="form-control"
                         value={value}
+                        ref={node}
                         onChange={e => {
                             setValue(e.target.value)
                         }}
