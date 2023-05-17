@@ -18,7 +18,7 @@ function App() {
   const [openedFileIDs, setOpenedFileIDs] = useState([])
   const [unsaveFileIDs, setUnsaveFileIDs] = useState([])
   const [searchedFiles, setSearchedFiles] = useState([])
-  const fileListNode = useRef(null)
+  const fileListNode = useRef()
 
   console.log(openedFileIDs, '88899998')
   const openedFiles = openedFileIDs.map(ID => {
@@ -106,21 +106,21 @@ function App() {
   const fileListArr = searchedFiles.length ? searchedFiles : files
   
   const createNewFile = () => {
-    const id = v4()
+    const item = {
+      id: v4(),
+      title: '',
+      body: '## 请输入 markdown',
+      createdAt: new Date().getTime()
+   }
   
     const newFiles = [
-        ...files,
-        {
-           id,
-           title: '',
-           body: '## 请输入 markdown',
-           createdAt: new Date().getTime()
-        }
+      ...files,
+      item
     ]
     setFiles(newFiles)
     console.log('fileListNode', fileListNode)
 
-    // fileListNode.current.onFileClick(id) // todo ? 没有用
+    fileListNode.current.editBtnClick(item) // todo ? 没有用
   }
 
 

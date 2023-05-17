@@ -1,14 +1,23 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrash, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { faMarkdown } from '@fortawesome/free-brands-svg-icons'
 import propTypes from 'prop-types'
 import useKeyPress from "../hooks/useKeyPress"
 
-const FileList = ({files, onFileClick, onSaveEdit, onFileDelete}) => {
+const FileList = forwardRef(
+    ({files, onFileClick, onSaveEdit, onFileDelete}, ref) => {
+
+        //暴露方法 handelValid 给父组件
+        useImperativeHandle(ref, () => ({
+            editBtnClick
+        }))
+
     const [editId, setEditId] = useState(null)
     const [value, setValue] = useState('')
     const node = useRef(null)
+
+    const editBtnClick = (file) => { setValue(file.title); setEditId(file.id) }
 
     const enterPressed = useKeyPress(13)
     const escPressed = useKeyPress(27)
@@ -54,7 +63,7 @@ const FileList = ({files, onFileClick, onSaveEdit, onFileDelete}) => {
                                 <button 
                                     type="button"
                                     className="icon-button col-2"
-                                    onClick={() => { setValue(file.title); setEditId(file.id)}}
+                                    onClick={() => editBtnClick(file)}
                                 >
                                     <FontAwesomeIcon title="编辑" size="lg" icon={faEdit} />
                                 </button>
@@ -97,6 +106,7 @@ const FileList = ({files, onFileClick, onSaveEdit, onFileDelete}) => {
         </ul>
     )
 }
+)
 
 FileList.propTypes = {
     files: propTypes.array,
