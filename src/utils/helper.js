@@ -1,3 +1,2 @@
-// export const flattenArr
-
+// export const flattenArrs
 // export const arrToMap
