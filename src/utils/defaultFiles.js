@@ -27,4 +27,4 @@ const defaultFiles = [
 
 export default defaultFiles;
 
-console.log('99', defaultFiles);
+console.log('defaultFiles', defaultFiles);

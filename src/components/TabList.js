@@ -48,8 +48,8 @@ function TabList({ files, activeId, unsaveIds, onTabClick, onCloseTab }) {
 }
 
 TabList.propTypes = {
-  files: propTypes.array,
-  unsaveIds: propTypes.array,
+  files: propTypes.instanceOf(Array),
+  unsaveIds: propTypes.instanceOf(Array),
 };
 
 TabList.defaultProps = {

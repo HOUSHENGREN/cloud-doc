@@ -123,7 +123,7 @@ const FileList = forwardRef(
 
 // https://stackoverflow.com/questions/41771217/react-linter-airbnb-proptypes-array
 FileList.propTypes = {
-  files: propTypes.array,
+  files: propTypes.instanceOf(Array),
   onFileClick: propTypes.func,
   onFileDelete: propTypes.func,
   onSaveEdit: propTypes.func,
@@ -131,6 +131,9 @@ FileList.propTypes = {
 
 FileList.defaultProps = {
   files: [],
+  onFileClick: () => {},
+  onFileDelete: () => {},
+  onSaveEdit: () => {},
 };
 
 export default FileList;

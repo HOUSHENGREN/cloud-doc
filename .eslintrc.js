@@ -7,6 +7,24 @@ module.exports = {
   rules: {
     'no-shadow': 'off',
     'no-console': 'off', // 允许代码出现console.log
+    'no-param-reassign': 'off', // 允许修改function的入参
+    'react-hooks/exhaustive-deps': 'off',
+    // 'no-param-reassign': [
+    //   // 允许修改function的入参 https://blog.csdn.net/weixin_43459866/article/details/114629507
+    //   'error',
+    //   {
+    //     props: true,
+    //     ignorePropertyModificationsFor: [
+    //       'e', // for e.returnvalue
+    //       'ctx', // for Koa routing
+    //       'req', // for Express requests
+    //       'request', // for Express requests
+    //       'res', // for Express responses
+    //       'response', // for Express responses
+    //       'state', // for vuex state
+    //     ],
+    //   },
+    // ],
     'react/jsx-filename-extension': 'off', // 关闭airbnb对于jsx必须写在jsx文件中的设置
     'react/prop-types': 'off', // 关闭airbnb对于必须添加prop-types的校验
     // 'react/destructuring-assignment': [
