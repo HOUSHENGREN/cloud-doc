@@ -8,16 +8,18 @@ import useKeyPress from "../hooks/useKeyPress"
 const FileList = forwardRef(
     ({files, onFileClick, onSaveEdit, onFileDelete}, ref) => {
 
-        //暴露方法 handelValid 给父组件
-        useImperativeHandle(ref, () => ({
-            editBtnClick
-        }))
 
     const [editId, setEditId] = useState(null)
     const [value, setValue] = useState('')
     const node = useRef(null)
 
     const editBtnClick = (file) => { setValue(file.title); setEditId(file.id) }
+
+    //暴露方法 handelValid 给父组件
+    useImperativeHandle(ref, () => ({
+        editBtnClick
+    }))
+
 
     const enterPressed = useKeyPress(13)
     const escPressed = useKeyPress(27)
@@ -70,7 +72,7 @@ const FileList = forwardRef(
                                 <button 
                                     type="button"
                                     className="icon-button col-2"
-                                    onClick={() => { onFileDelete(file.id); console.log('onFileDelete') }}
+                                    onClick={() => { onFileDelete(file.id); }}
                                 >
                                     <FontAwesomeIcon title="删除" size="lg" icon={faTrash} />
                                 </button>

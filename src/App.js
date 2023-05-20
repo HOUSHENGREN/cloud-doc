@@ -12,6 +12,9 @@ import "easymde/dist/easymde.min.css";
 import { useRef, useState } from 'react';
 import { v4 } from 'uuid'
 
+const fs = window.require('fs')
+console.log ('fs', fs)
+
 function App() {
   const [files, setFiles] = useState(defaultFiles)
   const [activeFileID, setActiveFileID] = useState('')
@@ -20,15 +23,12 @@ function App() {
   const [searchedFiles, setSearchedFiles] = useState([])
   const fileListNode = useRef()
 
-  console.log(openedFileIDs, '88899998')
   const openedFiles = openedFileIDs.map(ID => {
-    console.log('87898', files.find(file => file.id === ID) )
     return files.find(file => file.id === ID) 
   })
   const activeFile = files.find(file => file.id === activeFileID)
 
   const fileClick = fileID => {
-    console.log('***fileId+++ ', fileID)
     setActiveFileID(fileID)
     // 防止重复打开同一个文件
     if(!openedFileIDs.includes(fileID)) {
@@ -53,7 +53,6 @@ function App() {
     if(id === activeFileID) {
       // 前面splice 是保证这里openedFileIDs 是修改后的
       if(openedFileIDs.length) {
-        console.log('openFileIDs',openedFileIDs, openedFileIDs[0])
         setActiveFileID(openedFileIDs[openedFileIDs.length - 1])
       } else {
         setActiveFileID('')
@@ -118,9 +117,8 @@ function App() {
       item
     ]
     setFiles(newFiles)
-    console.log('fileListNode', fileListNode)
 
-    fileListNode.current.editBtnClick(item) // todo ? 没有用
+    fileListNode.current.editBtnClick(item, {isNew: true}) // todo ? 没有用
   }
 
 
@@ -133,7 +131,6 @@ function App() {
             ref={fileListNode}
             files={fileListArr}
             onFileClick={fileClick}
-            // onFileDelete={id => console.log('out file-delete', id)}
             onFileDelete={fileDelete}
             onSaveEdit={updateFileName}
           ></FileList>

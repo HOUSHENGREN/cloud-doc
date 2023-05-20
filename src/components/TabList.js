@@ -5,12 +5,10 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import './TabList.scss'
 
 const TabList = ({ files, activeId, unsaveIds, onTabClick, onCloseTab}) => {
-    console.log('999', files, activeId)
     return (
         <ul className="nav nav-pills">
             {
                 files.map(file => {
-                    console.log('unsaveId++', file)
                     const widthUnsaveMark = unsaveIds.includes(file.id)
                     const fClassName = classNames({
                         'nav-link': true,
