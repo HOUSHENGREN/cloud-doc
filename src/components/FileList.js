@@ -10,6 +10,18 @@ import { faEdit, faTrash, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faMarkdown } from '@fortawesome/free-brands-svg-icons';
 import propTypes from 'prop-types';
 import useKeyPress from '../hooks/useKeyPress';
+import fileHelper from '../utils/fileHelper';
+
+// const remote = require('@electron/remote');
+
+// const saveLocation = remote.app.getPath('documents');
+// console.log('saveLocation', saveLocation);
+
+// preload.js
+const { remote } = window.electron;
+const saveLocation = remote.app.getPath('documents');
+
+console.log('saveLocation', saveLocation);
 
 const FileList = forwardRef(
   ({ files, onFileClick, onSaveEdit, onFileDelete }, ref) => {
@@ -17,9 +29,13 @@ const FileList = forwardRef(
     const [value, setValue] = useState('');
     const node = useRef(null);
 
-    const editBtnClick = (file) => {
+    const [isNew, setIsNew] = useState(false);
+
+    const editBtnClick = (file, { isNew = false }) => {
       setValue(file.title);
       setEditId(file.id);
+
+      setIsNew(isNew);
     };
 
     // 暴露方法 handelValid 给父组件
@@ -38,8 +54,15 @@ const FileList = forwardRef(
     // 按esc 、 enter
     useEffect(() => {
       if (enterPressed && editId) {
-        onSaveEdit(editId, value);
-        closeSearch();
+        if (isNew) {
+          fileHelper.writeFile().then(() => {
+            onSaveEdit(editId, value);
+            closeSearch();
+          });
+        } else {
+          onSaveEdit(editId, value);
+          closeSearch();
+        }
       } else if (escPressed && editId) {
         closeSearch();
       }

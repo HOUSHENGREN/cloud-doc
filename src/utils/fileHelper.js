@@ -1,10 +1,11 @@
 // const path = window.require('path');
-const fs = window.require('fs').promises; // 用promise的方式返回；如果直接require('fs')就是回调的方式获取数据
+const fs = window.electron.fs.promises; // 用promise的方式返回；如果直接require('fs')就是回调的方式获取数据
 
 const fileHelper = {
   readFile: (path) => {
     return fs.readFile(path, { encoding: 'utf8' });
   },
+  // 新增文件
   writeFile: (path, content) => {
     return fs.writeFile(path, content, { encoding: 'utf8' });
   },

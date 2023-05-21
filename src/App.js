@@ -13,7 +13,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'easymde/dist/easymde.min.css';
 
-const fs = window.require('fs');
+const { fs } = window.electron;
 console.log('fs', fs);
 
 function App() {
