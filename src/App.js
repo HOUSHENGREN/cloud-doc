@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faSave } from '@fortawesome/free-solid-svg-icons';
 import SimpleMDE from 'react-simplemde-editor';
 import React, { useRef, useState } from 'react';
 import { v4 } from 'uuid';
@@ -12,9 +12,16 @@ import BottomBtn from './components/BottomBtn';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'easymde/dist/easymde.min.css';
+import fileHelper from './utils/fileHelper';
 
 const { fs } = window.electron;
 console.log('fs', fs);
+
+// preload.js
+const { remote, path } = window.electron;
+const saveLocation = remote.app.getPath('documents');
+
+console.log('saveLocation', saveLocation);
 
 function App() {
   const [files, setFiles] = useState(defaultFiles);
@@ -92,13 +99,55 @@ function App() {
     console.log('files-filter', files, openedFileIDs);
   };
 
-  const updateFileName = (id, title) => {
-    files.forEach((file) => {
-      if (file.id === id) {
-        file.title = title;
-      }
-    });
-    setFiles(files);
+  const updateFileName = (id, title, { isNew }) => {
+    if (isNew) {
+      fileHelper
+        .writeFile(
+          path.join(saveLocation, `${title}.md`),
+          files.find((i) => i.id === id).body
+        )
+        .then(() => {
+          files.forEach((file) => {
+            if (file.id === id) {
+              file.title = title;
+            }
+          });
+          setFiles(files);
+        });
+    } else {
+      const preTitle = files.find((i) => i.id === id).title;
+      fileHelper
+        .renameFile(
+          path.join(saveLocation, `${preTitle}.md`),
+          path.join(saveLocation, `${title}.md`)
+        )
+        .then(() => {
+          files.forEach((file) => {
+            if (file.id === id) {
+              file.title = title;
+            }
+          });
+          setFiles(files);
+        });
+    }
+    // files.forEach((file) => {
+    //   if (file.id === id) {
+    //     file.title = title;
+    //   }
+    // });
+    // setFiles(files);
+  };
+
+  // save unsave file
+  const saveCurrentFile = () => {
+    fileHelper
+      .writeFile(
+        path.join(saveLocation, `${activeFile.title}.md`),
+        activeFile.body
+      )
+      .then(() => {
+        setUnsaveFileIDs(unsaveFileIDs.filter((id) => id !== activeFile.id));
+      });
   };
 
   const fileSearch = (keyword) => {
@@ -175,6 +224,15 @@ function App() {
                   minHeight: '370px',
                 }}
               />
+              {/* todo 临时的保存按钮 */}
+              <div className="col">
+                <BottomBtn
+                  text="保存"
+                  colorClass="btn-success bnt-block"
+                  icon={faSave}
+                  onBntClick={saveCurrentFile}
+                />
+              </div>
             </>
           )}
         </div>

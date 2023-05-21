@@ -10,7 +10,7 @@ import { faEdit, faTrash, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faMarkdown } from '@fortawesome/free-brands-svg-icons';
 import propTypes from 'prop-types';
 import useKeyPress from '../hooks/useKeyPress';
-import fileHelper from '../utils/fileHelper';
+// import fileHelper from '../utils/fileHelper';
 
 // const remote = require('@electron/remote');
 
@@ -31,6 +31,7 @@ const FileList = forwardRef(
 
     const [isNew, setIsNew] = useState(false);
 
+    // const editBtnClick = (file) => {
     const editBtnClick = (file, { isNew = false }) => {
       setValue(file.title);
       setEditId(file.id);
@@ -54,15 +55,15 @@ const FileList = forwardRef(
     // 按esc 、 enter
     useEffect(() => {
       if (enterPressed && editId) {
-        if (isNew) {
-          fileHelper.writeFile().then(() => {
-            onSaveEdit(editId, value);
-            closeSearch();
-          });
-        } else {
-          onSaveEdit(editId, value);
-          closeSearch();
-        }
+        // if (isNew) {
+        //   fileHelper.writeFile(saveLocation, `${value}.md`).then(() => {
+        //     onSaveEdit(editId, value);
+        //     closeSearch();
+        //   });
+        // } else {
+        onSaveEdit(editId, value, { isNew });
+        closeSearch();
+        // }
       } else if (escPressed && editId) {
         closeSearch();
       }
@@ -99,7 +100,7 @@ const FileList = forwardRef(
                 <button
                   type="button"
                   className="icon-button col-2"
-                  onClick={() => editBtnClick(file)}
+                  onClick={() => editBtnClick(file, { isNew: false })}
                 >
                   <FontAwesomeIcon title="编辑" size="lg" icon={faEdit} />
                 </button>
