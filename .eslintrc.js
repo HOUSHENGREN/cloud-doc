@@ -5,6 +5,7 @@ module.exports = {
     'plugin:prettier/recommended', // prettier配置
   ],
   rules: {
+    // 'no-unused-vars': '',
     'no-shadow': 'off',
     'no-console': 'off', // 允许代码出现console.log
     'no-param-reassign': 'off', // 允许修改function的入参
