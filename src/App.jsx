@@ -14,14 +14,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'easymde/dist/easymde.min.css';
 import fileHelper from './utils/fileHelper';
 
-const { fs } = window.electron;
-console.log('fs', fs);
+const { store } = window.electron;
+// // const Store = require('electron-store');
+
+console.log('store', window.electron, store);
+// const store = new Store();
+
+store.set('test', 'ssss');
+console.log('4eeee', store.get('test'));
+
+// store.delete('test');
+// console.log('4eeee+++', store.get('test'));
 
 // preload.js
 const { remote, path } = window.electron;
 const saveLocation = remote.app.getPath('documents');
-
-console.log('saveLocation', saveLocation);
 
 function App() {
   const [files, setFiles] = useState(defaultFiles);

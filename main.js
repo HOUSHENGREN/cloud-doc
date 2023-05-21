@@ -1,7 +1,26 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
+// const ElectronStore = require('electron-store');
+
+// // ElectronStore.initRenderer();
+// const store = new ElectronStore();
+// store.set('test', 666);
+// console.log('09789087init', store.get('test'));
+
+// eslint-disable-next-line import/no-extraneous-dependencies
 const isDev = require('electron-is-dev');
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const Store = require('electron-store');
+
+const store = new Store();
+
+// IPC listener => https://electron-react-boilerplate.js.org/docs/electron-store
+ipcMain.on('electron-store-get', async (event, val) => {
+  event.returnValue = store.get(val);
+});
+ipcMain.on('electron-store-set', async (event, key, val) => {
+  store.set(key, val);
+});
 
 app.on('ready', () => {
   const mainWindow = new BrowserWindow({
