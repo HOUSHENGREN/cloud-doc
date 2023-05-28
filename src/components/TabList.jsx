@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
-import './TabList.scss';
+import './TabList.module.scss';
 
 function TabList({ files, activeId, unsaveIds, onTabClick, onCloseTab }) {
   return (
