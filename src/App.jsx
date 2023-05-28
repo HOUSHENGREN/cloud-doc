@@ -62,18 +62,15 @@ function App() {
       openedFileIDs,
       openedFileIDs.filter((i) => i !== id)
     );
-    // const filterOpenFiles = openedFileIDs.filter(i => i !== id)
-    // setOpenedFileIDs(filterOpenFiles)
 
-    const filterOpenFiles = openedFileIDs.filter((i) => i !== id);
+    const filterOpenFileIDs = openedFileIDs.filter((i) => i !== id);
 
-    openedFileIDs.splice(0, openedFileIDs.length, ...filterOpenFiles);
-    setOpenedFileIDs(openedFileIDs);
+    setOpenedFileIDs(filterOpenFileIDs);
 
     if (id === activeFileID) {
-      // 前面splice 是保证这里openedFileIDs 是修改后的
-      if (openedFileIDs.length) {
-        setActiveFileID(openedFileIDs[openedFileIDs.length - 1]);
+      // filterOpenFileIDs 是最新修改的
+      if (filterOpenFileIDs.length) {
+        setActiveFileID(filterOpenFileIDs[filterOpenFileIDs.length - 1]); // 倒数第一个设置为活跃
       } else {
         setActiveFileID('');
       }
