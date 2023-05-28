@@ -42,7 +42,7 @@ app.on('ready', () => {
   // eslint-disable-next-line global-require
   require('@electron/remote/main').enable(mainWindow.webContents);
 
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools(); // 调试工具
 
   const url = isDev ? 'http://localhost:3000/' : 'dummy'; // dummy 占位，todo，生产环境先不管
   mainWindow.loadURL(url);
